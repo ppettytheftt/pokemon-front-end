@@ -1,21 +1,26 @@
 import { FaSearch } from "react-icons/fa";
 import { useState } from "react";
 
-export const PokemonSearchBar = ({ hitPokemonEndpoint }) => {
-  const [field, setField] = useState("");
+export const PokemonSearchBar = () => {
+  const [field, setField] = useState();
+  const [pokemonData, setPokemonData] = useState([]);
 
-  function handleSubmit(ev) {
-    ev.preventDefault();
-    useEffect(() => {
-      console.log(field);
-      hitPokemonEndpoint(field);
-    });
+  function handleSubmit(e) {
+    e.preventDefault();
+    hitApi(field);
+  }
+
+  async function hitApi(searchTerm) {
+    await fetch("http://localhost:9090/pokemon/name/" + searchTerm)
+      .then((response) => response.json())
+      .then((json) => console.log(json))
+      .catch((error) => console.log(error));
   }
 
   return (
     <>
       <FaSearch id="search-icon" />
-      <form onSubmit={(ev) => handleSubmit(ev)}>
+      <form onSubmit={(e) => handleSubmit(e)}>
         <input
           type="text"
           placeholder="Search for Pokemon..."
