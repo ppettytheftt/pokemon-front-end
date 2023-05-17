@@ -5,7 +5,6 @@ export const PokemonSearchBar = () => {
   const [field, setField] = useState();
   const [pokemonData, setPokemonData] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  const [abilitiesList, setAbilitiesList] = useState();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -39,19 +38,23 @@ export const PokemonSearchBar = () => {
         <>
           <h3>Basic Information:</h3>
           <ul>
-            <li key={pokemonData.id}>Id: {pokemonData.id}</li>
+            <li key={pokemonData.id + 100}>Id: {pokemonData.id}</li>
             <li key={pokemonData.name}>Name: {pokemonData.name}</li>
             <li key={pokemonData.height}>height: {pokemonData.height}</li>
             <li key={pokemonData.weight}>weight: {pokemonData.weight}</li>
             <li key={pokemonData.baseExperience}>
               baseExperience: {pokemonData.baseExperience}
             </li>
-            <li key={pokemonData.order}>order: {pokemonData.order}</li>
+            <li key={pokemonData.order + 1000}>order: {pokemonData.order}</li>
           </ul>
           <h3>Abilities:</h3>
           <ul>
             {pokemonData.abilitiesList.map((ability) => {
-              return <li key={ability.slot}>{ability.slot}</li>;
+              return (
+                <>
+                  <li key={ability.ability.name}>{ability.ability.name}</li>
+                </>
+              );
             })}
           </ul>
         </>
