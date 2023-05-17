@@ -4,13 +4,12 @@ import { useState } from "react";
 export const PokemonSearchBar = () => {
   const [field, setField] = useState();
   const [pokemonData, setPokemonData] = useState();
-  const [showResults, setShowResults] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   function handleSubmit(e) {
     e.preventDefault();
+    setIsLoading(true);
     hitApi(field);
-    setShowResults(true);
-    console.log(pokemonData);
   }
 
   async function hitApi(searchTerm) {
@@ -18,6 +17,7 @@ export const PokemonSearchBar = () => {
       .then((response) => response.json())
       .then((data) => {
         setPokemonData(data);
+        setIsLoading(false);
       })
       .catch((error) => console.log(error));
   }
@@ -33,8 +33,10 @@ export const PokemonSearchBar = () => {
           onChange={(e) => setField(e.target.value)}
         />
       </form>
+      {isLoading && <h2>Loading Results.. </h2>}
       {pokemonData && (
         <>
+          <h3>Basic Information:</h3>
           <ul>
             <li key={pokemonData.id}>Id: {pokemonData.id}</li>
             <li key={pokemonData.name}>Name: {pokemonData.name}</li>
