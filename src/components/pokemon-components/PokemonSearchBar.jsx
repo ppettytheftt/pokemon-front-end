@@ -1,10 +1,15 @@
 import { FaSearch } from "react-icons/fa";
 import { useState } from "react";
+import { BasicInformation } from "./BasicInformation";
+import { Ability } from "./Ability";
+import { HeldItem } from "./HeldItem";
 
 export const PokemonSearchBar = () => {
   const [field, setField] = useState();
   const [pokemonData, setPokemonData] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [basicInfo, setBasicInfo] = useState();
+  const [heldItems, setHeldItems] = useState();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -17,6 +22,14 @@ export const PokemonSearchBar = () => {
       .then((response) => response.json())
       .then((data) => {
         setPokemonData(data);
+        setBasicInfo({
+          id: data.id,
+          name: data.name,
+          height: data.height,
+          weight: data.weight,
+          baseExperience: data.baseExperience,
+          order: data.order,
+        });
         setIsLoading(false);
       })
       .catch((error) => console.log(error));
@@ -34,27 +47,27 @@ export const PokemonSearchBar = () => {
         />
       </form>
       {isLoading && <h2>Loading Results.. </h2>}
-      {pokemonData && (
+      {basicInfo && (
         <>
-          <h3>Basic Information:</h3>
-          <ul>
-            <li key={pokemonData.id + 100}>Id: {pokemonData.id}</li>
-            <li key={pokemonData.name}>Name: {pokemonData.name}</li>
-            <li key={pokemonData.height}>height: {pokemonData.height}</li>
-            <li key={pokemonData.weight}>weight: {pokemonData.weight}</li>
-            <li key={pokemonData.baseExperience}>
-              baseExperience: {pokemonData.baseExperience}
-            </li>
-            <li key={pokemonData.order + 1000}>order: {pokemonData.order}</li>
-          </ul>
+          <BasicInformation pokemonInfo={basicInfo} />
+        </>
+      )}
+      {pokemonData?.abilitiesList > 0 && (
+        <>
           <h3>Abilities:</h3>
           <ul>
             {pokemonData.abilitiesList.map((ability) => {
-              return (
-                <>
-                  <li key={ability.ability.name}>{ability.ability.name}</li>
-                </>
-              );
+              return <Ability ability={ability} />;
+            })}
+          </ul>
+        </>
+      )}
+      {pokemonData?.pokemonHeldItemList > 0 && (
+        <>
+          <h3>Held Items:</h3>
+          <ul>
+            {pokemonData.pokemonHeldItemList.map((item) => {
+              return <HeldItem itemName={item.item.name} />;
             })}
           </ul>
         </>
