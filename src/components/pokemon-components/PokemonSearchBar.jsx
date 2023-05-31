@@ -1,5 +1,5 @@
 import { FaSearch } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BasicInformation } from "./BasicInformation";
 import { Ability } from "./Ability";
 import { HeldItem } from "./HeldItem";
@@ -9,7 +9,8 @@ export const PokemonSearchBar = () => {
   const [pokemonData, setPokemonData] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [basicInfo, setBasicInfo] = useState();
-  const [heldItems, setHeldItems] = useState();
+  const [abilitiesList, setAbilitiesList] = useState();
+  const [itemsList, setItemsList] = useState();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -30,10 +31,24 @@ export const PokemonSearchBar = () => {
           baseExperience: data.baseExperience,
           order: data.order,
         });
+        setAbilitiesList(data.abilitiesList);
+        setItemsList(data.pokemonHeldItemList);
         setIsLoading(false);
       })
       .catch((error) => console.log(error));
   }
+
+  useEffect(() => {
+    console.log(pokemonData);
+  }, [pokemonData]);
+
+  useEffect(() => {
+    console.log(abilitiesList);
+  }, [abilitiesList]);
+
+  useEffect(() => {
+    console.log(itemsList);
+  }, [itemsList]);
 
   return (
     <>
@@ -52,21 +67,21 @@ export const PokemonSearchBar = () => {
           <BasicInformation pokemonInfo={basicInfo} />
         </>
       )}
-      {pokemonData?.abilitiesList > 0 && (
+      {abilitiesList && (
         <>
           <h3>Abilities:</h3>
           <ul>
-            {pokemonData.abilitiesList.map((ability) => {
-              return <Ability ability={ability} />;
+            {abilitiesList?.map((ability) => {
+              return <Ability ability={ability.ability.name} />;
             })}
           </ul>
         </>
       )}
-      {pokemonData?.pokemonHeldItemList > 0 && (
+      {itemsList && (
         <>
           <h3>Held Items:</h3>
           <ul>
-            {pokemonData.pokemonHeldItemList.map((item) => {
+            {itemsList?.map((item) => {
               return <HeldItem itemName={item.item.name} />;
             })}
           </ul>

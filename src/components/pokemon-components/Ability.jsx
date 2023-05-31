@@ -3,7 +3,7 @@ export function Ability(props) {
 
   return (
     <>
-      <li key={ability.ability.name}>{ability.ability.name}</li>
+      <li key={ability}>{ability}</li>
     </>
   );
 }
