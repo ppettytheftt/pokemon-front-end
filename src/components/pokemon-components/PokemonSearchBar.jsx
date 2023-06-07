@@ -109,7 +109,9 @@ export const PokemonSearchBar = () => {
           <h3>Held Items:</h3>
           <ul>
             {itemsList?.map((item) => {
-              return <HeldItem itemName={item.item.name} />;
+              return (
+                <HeldItem itemId={item.item.id} itemName={item.item.name} />
+              );
             })}
           </ul>
         </>
